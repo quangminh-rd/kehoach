@@ -1,0 +1,1347 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Quản lý Kế hoạch - Nhóm theo năm & loại dự án</title>
+    <link rel="icon" type="image/svg+xml" href="https://quangminhpro.com/wp-content/uploads/2025/08/logo-3.svg">
+    <!-- Google Fonts & Font Awesome -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(145deg, #f0f4fa 0%, #e9eef5 100%);
+            font-family: 'Inter', sans-serif;
+            color: #0a1c2f;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ========= HEADER CỐ ĐỊNH ========= */
+        .app-header {
+            flex-shrink: 0;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(203, 213, 225, 0.7);
+            padding: 1rem 2rem;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.02);
+            z-index: 10;
+        }
+
+        .hero-section {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) auto;
+            align-items: center;
+            gap: 1rem;
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        .title-badge h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #1E2A5E, #2D3A6E);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            letter-spacing: -0.3px;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            min-width: 0;
+            max-width: 100%;
+        }
+
+        #planTitleText {
+            min-width: 0;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            display: block;
+        }
+
+        .title-badge h1 img {
+            height: 3rem;
+            width: auto;
+            vertical-align: middle;
+            display: inline-block;
+        }
+
+        .controls-group {
+            display: flex;
+            gap: 12px;
+            flex-wrap: nowrap;
+            align-items: center;
+            justify-content: flex-end;
+            overflow-x: auto;
+            max-width: 100%;
+            padding-bottom: 2px;
+        }
+
+        .btn {
+            border: none;
+            background: white;
+            padding: 0.5rem 1.2rem;
+            border-radius: 20px;
+            font-weight: 500;
+            font-size: 0.85rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02), 0 1px 3px rgba(0, 0, 0, 0.03);
+            border: 1px solid #e2e8f0;
+            color: #1e2a3e;
+        }
+
+        .btn-primary {
+            background: #1e3a5f;
+            border: none;
+            color: white;
+            box-shadow: 0 4px 8px rgba(0, 32, 64, 0.08);
+        }
+
+        .btn-primary i {
+            color: white;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid #cbd5e1;
+        }
+
+        .btn:hover {
+            transform: translateY(-1px);
+            background: #f8fafc;
+            border-color: #94a3b8;
+        }
+
+        .btn-primary:hover {
+            background: #0f2c48;
+            transform: translateY(-1px);
+            box-shadow: 0 8px 18px rgba(0, 32, 64, 0.12);
+        }
+
+        select.filter-select {
+            padding: 0.45rem 1rem;
+            border-radius: 15px;
+            border: 1px solid #cbd5e1;
+            background: white;
+            font-weight: 500;
+            font-size: 0.82rem;
+            color: #0f172a;
+            cursor: pointer;
+            outline: none;
+            transition: all 0.2s;
+            flex-shrink: 0;
+        }
+
+        select.filter-select:hover {
+            border-color: #94a3b8;
+            background: #fefefe;
+        }
+
+        /* Thanh chuyển chế độ nhóm - Căn giữa & rõ ràng */
+        .group-mode-wrapper {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 15px;
+        }
+
+        .group-mode-bar {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(4px);
+            border-radius: 20px;
+            display: inline-flex;
+            padding: 6px;
+            gap: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(203, 213, 225, 0.8);
+        }
+
+        .mode-left {
+            display: flex;
+            gap: 10px;
+        }
+
+        .mode-right {
+            display: flex;
+            gap: 8px;
+        }
+
+        .mode-chip {
+            padding: 10px 28px;
+            border-radius: 15px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            transition: 0.2s ease;
+            color: #2c3e50;
+            letter-spacing: -0.2px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .mode-chip i {
+            font-size: 0.8rem;
+        }
+
+        .mode-chip.active {
+            background: #1e3a5f;
+            color: white;
+            box-shadow: 0 4px 12px rgba(0, 48, 80, 0.2);
+        }
+
+        /* ========= VÙNG CUỘN CHÍNH ========= */
+        .scroll-area {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px 24px 16px 24px;
+            scroll-behavior: smooth;
+        }
+
+        .scroll-area::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .scroll-area::-webkit-scrollbar-track {
+            background: #e2e8f0;
+            border-radius: 8px;
+        }
+
+        .scroll-area::-webkit-scrollbar-thumb {
+            background: #94a3b8;
+            border-radius: 8px;
+        }
+
+        .projects-container {
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        /* ========= CARD DỰ ÁN ========= */
+        .project-card-modern {
+            background: #ffffff;
+            border-radius: 12px;
+            margin-left: 16px;
+            margin-right: 16px;
+            margin-bottom: 8px;
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.05), 0 2px 4px rgba(0, 0, 0, 0.02);
+            transition: all 0.25s;
+            border: 1px solid rgba(203, 213, 225, 0.5);
+            overflow: hidden;
+        }
+
+        .project-header-modern {
+            padding: 0.7rem 1.4rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            background: #fbfdff;
+            transition: background 0.2s;
+            border-bottom: 1px solid #eef2f8;
+        }
+
+        .project-header-modern:hover {
+            background: #f5f9ff;
+        }
+
+        .project-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            color: #0c4a6e;
+        }
+
+        .project-title i {
+            font-size: 1.3rem;
+            color: #2c6e9e;
+        }
+
+        .toggle-icon {
+            font-size: 1.2rem;
+            color: #5b6e8c;
+            transition: transform 0.2s;
+        }
+
+        .project-content-modern {
+            padding: 0.8rem 1.2rem 1.4rem;
+            transition: all 0.2s;
+            background: #ffffff;
+        }
+
+        /* Phase group */
+        .phase-group-modern {
+            background: #ffffff;
+            border-radius: 8px;
+            margin-top: 8px;
+            border: 1px solid #eef2f6;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+            overflow: hidden;
+        }
+
+        .phase-header-modern {
+            padding: 0.7rem 1.2rem;
+            background: #fafcff;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            font-size: 0.9rem;
+            border-left: 4px solid #2d7a9e;
+            transition: all 0.2s;
+        }
+
+        .phase-header-modern:hover {
+            background: #f1f6fe;
+        }
+
+        .phase-title i {
+            margin-right: 8px;
+            color: #2c6e9e;
+        }
+
+        .phase-content-modern {
+            padding: 1rem 1.2rem 1.8rem;
+        }
+
+        /* Bảng với độ rộng cột tùy chỉnh */
+        .table-wrapper {
+            overflow-x: auto;
+            border-radius: 5px;
+            border: 1px solid #ecf3f9;
+            background: white;
+            width: 100%;
+            margin-top: 8px;
+        }
+
+        .modern-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.8rem;
+            min-width: 1200px;
+            /* giữ thanh cuộn ngang khi màn hẹp */
+            table-layout: auto;
+            background: #ffffff;
+        }
+
+        .modern-table thead th {
+            background: #e6f0fb;
+            /* xanh nhẹ hơn hiện tại */
+        }
+
+        .modern-table tbody tr:nth-child(even) {
+            background: #f4f8fd;
+        }
+
+        .modern-table tbody tr:hover {
+            background: #eaf3ff;
+        }
+
+        .modern-table th {
+            padding: 6px 4px;
+            border: 1px solid #dbe3ec;
+            background: #eaf2fb;
+            font-weight: 700;
+            color: #0f2b3d;
+        }
+
+        .modern-table td {
+            padding: 6px 4px;
+            border: 1px solid #dbe3ec;
+        }
+
+        /* ĐỘ RỘNG CỘT CHO BẢNG NHIỆM VỤ CHÍNH (có 11 cột) */
+        .modern-table th:nth-child(1),
+        .modern-table td:nth-child(1) {
+            width: 3%;
+            /* STT */
+            text-align: center;
+        }
+
+        .modern-table th:nth-child(2),
+        .modern-table td:nth-child(2) {
+            width: 15%;
+            /* Nhiệm vụ (tên + mô tả) */
+            text-align: left;
+        }
+
+        .modern-table th:nth-child(3),
+        .modern-table td:nth-child(3) {
+            width: 12%;
+            /* Mục tiêu*/
+            text-align: left;
+        }
+
+        .modern-table th:nth-child(4),
+        .modern-table td:nth-child(4) {
+            width: 8%;
+            /* Phụ trách */
+        }
+
+        .modern-table th:nth-child(5),
+        .modern-table td:nth-child(5) {
+            width: 8%;
+            /* Phối hợp */
+        }
+
+        .modern-table th:nth-child(6),
+        .modern-table td:nth-child(6) {
+            width: 7%;
+            /* Bắt đầu */
+            text-align: left;
+        }
+
+        .modern-table th:nth-child(7),
+        .modern-table td:nth-child(7) {
+            width: 7%;
+            /* Deadline */
+            text-align: left;
+        }
+
+        .modern-table th:nth-child(8),
+        .modern-table td:nth-child(8) {
+            width: 9%;
+            /* Trạng thái */
+            text-align: center;
+        }
+
+        .modern-table th:nth-child(9),
+        .modern-table td:nth-child(9) {
+            width: 7%;
+            /* Tiến độ */
+            text-align: center;
+        }
+
+        .modern-table th:nth-child(10),
+        .modern-table td:nth-child(10) {
+            width: 6%;
+            /* Ưu tiên */
+            text-align: center;
+        }
+
+        .modern-table th:nth-child(11),
+        .modern-table td:nth-child(11) {
+            width: 11%;
+            /* Ghi chú */
+            text-align: center;
+        }
+
+        .modern-table th:nth-child(12),
+        .modern-table td:nth-child(12) {
+            width: 7%;
+            /* Chi tiết (nút xem) */
+            text-align: center;
+        }
+
+        .subtask-section .modern-table {
+            background: #fffdf7;
+            /* nền vàng rất nhẹ */
+        }
+
+        .subtask-section .modern-table thead th {
+            background: #fff4d6;
+            /* header vàng */
+        }
+
+        .subtask-section .modern-table tbody tr:nth-child(even) {
+            background: #fffaf0;
+        }
+
+        .subtask-section .modern-table tbody tr:hover {
+            background: #fff1cc;
+        }
+
+        .subtask-section {
+            border: 1px solid #f3e2b3;
+        }
+
+        /* ĐỘ RỘNG CỘT CHO BẢNG NHIỆM VỤ CHI TIẾT (subtask) - có 11 cột */
+        .subtask-section .modern-table th:nth-child(1),
+        .subtask-section .modern-table td:nth-child(1) {
+            width: 3%;
+            text-align: center;
+        }
+
+        .subtask-section .modern-table th:nth-child(2),
+        .subtask-section .modern-table td:nth-child(2) {
+            width: 13%;
+            /* Tên chi tiết + mô tả */
+            text-align: left;
+        }
+
+        .subtask-section .modern-table th:nth-child(3),
+        .subtask-section .modern-table td:nth-child(3) {
+            width: 10%;
+            /* Mục tiêu */
+            text-align: left;
+        }
+
+        .subtask-section .modern-table th:nth-child(4),
+        .subtask-section .modern-table td:nth-child(4) {
+            width: 8%;
+            /* Phụ trách */
+            text-align: left;
+        }
+
+        .subtask-section .modern-table th:nth-child(5),
+        .subtask-section .modern-table td:nth-child(5) {
+            width: 8%;
+            /* Phối hợp */
+            text-align: left;
+        }
+
+        .subtask-section .modern-table th:nth-child(6),
+        .subtask-section .modern-table td:nth-child(6) {
+            width: 7%;
+            /* Bắt đầu */
+            text-align: left;
+        }
+
+        .subtask-section .modern-table th:nth-child(7),
+        .subtask-section .modern-table td:nth-child(7) {
+            width: 7%;
+            /* Deadline */
+            text-align: left;
+        }
+
+        .subtask-section .modern-table th:nth-child(8),
+        .subtask-section .modern-table td:nth-child(8) {
+            width: 8%;
+            /* Trạng thái */
+        }
+
+        .subtask-section .modern-table th:nth-child(9),
+        .subtask-section .modern-table td:nth-child(9) {
+            width: 6%;
+            /* Ưu tiên */
+        }
+
+        .subtask-section .modern-table th:nth-child(10),
+        .subtask-section .modern-table td:nth-child(10) {
+            width: 9%;
+            /* Lý do trễ */
+            text-align: left;
+        }
+
+        .subtask-section .modern-table th:nth-child(11),
+        .subtask-section .modern-table td:nth-child(11) {
+            width: 9%;
+            /* Rủi ro */
+            text-align: left;
+        }
+
+        .subtask-section .modern-table th:nth-child(12),
+        .subtask-section .modern-table td:nth-child(12) {
+            width: 12%;
+            /* Rủi ro */
+            text-align: left;
+        }
+
+
+        /* Điều chỉnh riêng cho các cột mô tả bên trong nhiệm vụ chính để không vỡ layout */
+        .modern-table .task-name {
+            font-weight: 700;
+            color: #0f2b3d;
+            margin-bottom: 6px;
+            font-size: 0.85rem;
+            word-break: break-word;
+        }
+
+        .modern-table .task-desc {
+            font-size: 0.75rem;
+            color: #5b6e8c;
+            line-height: 1.35;
+            word-break: break-word;
+        }
+
+        .badge-status {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            background: #eef2ff;
+            color: #1f3a5f;
+            white-space: nowrap;
+        }
+
+        .badge-status.done {
+            background: #e0f2e9;
+            color: #146b3a;
+        }
+
+        .badge-status.progress {
+            background: #fff1e0;
+            color: #b45f06;
+        }
+
+        .badge-status.pending {
+            background: #ffe6e5;
+            color: #bc2c1e;
+        }
+
+        .priority-tag {
+            font-weight: 700;
+            font-size: 0.7rem;
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 20px;
+            white-space: nowrap;
+        }
+
+        .priority-high {
+            color: #d32f2f;
+            background: #fff0f0;
+        }
+
+        .priority-medium {
+            color: #ed6c02;
+            background: #fff4e5;
+        }
+
+        .priority-low {
+            color: #2e7d32;
+            background: #e8f5e9;
+        }
+
+        .progress-ring {
+            background: #e9ecef;
+            border-radius: 20px;
+            padding: 2px 8px;
+            font-weight: 600;
+            font-size: 0.7rem;
+            display: inline-block;
+        }
+
+        .toggle-subtask-btn {
+            background: #eef2ff;
+            border: none;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: #1e4b6e;
+            cursor: pointer;
+            transition: 0.2s;
+            white-space: nowrap;
+        }
+
+        .subtask-section {
+            background: #fefcf5;
+            border-radius: 20px;
+            padding: 12px;
+            margin-top: 6px;
+        }
+
+        .department-section {
+            margin-bottom: 14px;
+        }
+
+        .department-header,
+        .group-header-card {
+            border-radius: 12px;
+            margin-bottom: 10px;
+            padding: 0.75rem 1.15rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            cursor: pointer;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.100);
+        }
+
+        .department-header {
+            background: linear-gradient(105deg, #a3d1f7 0%, #f3faff 100%);
+            border-left: 5px solid #3164c2;
+        }
+
+        .department-title,
+        .group-title {
+            font-size: 1.02rem;
+            font-weight: 700;
+            color: #0f2f4f;
+            letter-spacing: -0.3px;
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            min-width: 0;
+        }
+
+        .department-title i,
+        .group-title i {
+            font-size: 1rem;
+        }
+
+        .department-meta,
+        .group-meta {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .group-badge {
+            background: #2c6e9e20;
+            padding: 4px 14px;
+            border-radius: 18px;
+            font-size: 0.76rem;
+            font-weight: 600;
+            color: #1e4a76;
+        }
+
+        .department-badge {
+            background: #2c6e9e20;
+            padding: 4px 14px;
+            border-radius: 18px;
+            font-size: 0.76rem;
+            font-weight: 600;
+            color: #1e4a76;
+        }
+
+        .group-content,
+        .department-content {
+            padding-left: 10px;
+        }
+
+
+        .group-section {
+            margin-bottom: 12px;
+        }
+
+        .app-footer {
+            flex-shrink: 0;
+            text-align: center;
+            font-size: 0.7rem;
+            color: #5e6f8d;
+            border-top: 1px solid #dfe7ef;
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(4px);
+            padding: 0.8rem;
+            z-index: 5;
+        }
+
+        .loading-modern {
+            text-align: center;
+            padding: 70px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        .error-msg {
+            background: #fff5f5;
+            border-left: 6px solid #e53e3e;
+            padding: 1.5rem;
+            border-radius: 10px;
+            color: #742a2a;
+        }
+
+        @media (max-width: 700px) {
+            .app-header {
+                padding: 0.8rem 1rem;
+            }
+
+            .scroll-area {
+                padding: 16px;
+            }
+
+            .hero-section {
+                grid-template-columns: 1fr;
+                align-items: stretch;
+            }
+
+            .mode-chip {
+                padding: 6px 18px;
+                font-size: 0.8rem;
+            }
+
+            .controls-group {
+                justify-content: flex-start;
+                overflow-x: auto;
+            }
+
+            .group-header-card,
+            .department-header {
+                padding: 0.65rem 0.95rem;
+            }
+
+            .project-header-modern {
+                padding: 1rem 1.2rem;
+            }
+
+            /* Trên mobile vẫn giữ độ rộng tương đối, thanh cuộn ngang hoạt động */
+            .modern-table {
+                min-width: 1000px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="app-header">
+        <div class="hero-section">
+            <div class="title-badge">
+                <h1><img src="https://quangminhpro.com/wp-content/uploads/2025/08/logo-3.svg" alt="Logo">
+                    <span id="planTitleText">KẾ HOẠCH CÔNG VIỆC</span>
+                </h1>
+            </div>
+            <div class="controls-group">
+                <select id="departmentFilter" class="filter-select" onchange="applyAllFilters()">
+                    <option value="">Tất cả phòng ban</option>
+                </select>
+                <select id="projectFilter" class="filter-select" onchange="applyAllFilters()">
+                    <option value="">Tất cả dự án</option>
+                </select>
+                <select id="yearFilter" class="filter-select" onchange="applyAllFilters()">
+                    <option value="">Tất cả năm tạo</option>
+                </select>
+                <select id="typeFilter" class="filter-select" onchange="applyAllFilters()">
+                    <option value="">Tất cả loại dự án</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="scroll-area">
+        <div class="group-mode-wrapper">
+            <div class="group-mode-bar">
+                <div class="mode-left">
+                    <button class="mode-chip active" data-mode="year">
+                        <i class="fas fa-calendar-alt"></i> Theo năm tạo
+                    </button>
+                    <button class="mode-chip" data-mode="type">
+                        <i class="fas fa-tags"></i> Theo loại dự án
+                    </button>
+                </div>
+
+                <div class="mode-right">
+                    <button class="btn btn-outline" onclick="expandAll()">
+                        <i class="fas fa-plus-circle"></i> Mở hết
+                    </button>
+                    <button class="btn btn-outline" onclick="collapseAll()">
+                        <i class="fas fa-compress-alt"></i> Thu gọn
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="projects-container" id="plan-container">
+            <div class="loading-modern"><i class="fas fa-spinner fa-pulse"></i> Đang đồng bộ dữ liệu ...</div>
+        </div>
+    </div>
+
+    <div class="app-footer">
+        © Công Ty TNHH Cơ Kim Khí Quang Minh
+    </div>
+
+    <script src="https://apis.google.com/js/api.js"></script>
+    <script>
+        // ======================= CẤU HÌNH GOOGLE SHEETS =======================
+        const PLAN_SPREADSHEET_ID = '1hT4izyWGoqklc5CAfqb66i0r5p5PaiuKxXMrqEO_EaI';
+        const API_KEY = 'AIzaSyA9g2qFUolpsu3_HVHOebdZb0NXnQgXlFM';
+        const PLAN_MAIN_RANGE = '02_01_ke_hoach!A:V';
+        const PLAN_SUB_RANGE = '02_02_ke_hoach_chi_tiet!A:R';
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const initialDepartmentFilter = normalizeQueryValue(urlParams.get('phongBan') || '');
+
+        let rawMainTasks = [];
+        let rawSubTasks = [];
+        let currentGroupMode = 'year';
+        let currentDepartmentFilter = initialDepartmentFilter;
+
+        function normalizeQueryValue(value) {
+            return (value || '').replace(/\+/g, ' ').trim();
+        }
+
+        function makeSafeId(value) {
+            return String(value || 'all').replace(/[^a-z0-9]/gi, '-').replace(/-+/g, '-').replace(/^-|-$/g, '') || 'all';
+        }
+
+        function initGapiAndFetch() {
+            gapi.load('client', async () => {
+                try {
+                    await gapi.client.init({
+                        apiKey: API_KEY,
+                        discoveryDocs: ['https://sheets.googleapis.com/$discovery/rest?version=v4']
+                    });
+                    await fetchAllPlanData();
+                } catch (err) {
+                    showError('Khởi tạo API thất bại: ' + err.message);
+                }
+            });
+        }
+
+        async function fetchAllPlanData() {
+            try {
+                const mainResp = await gapi.client.sheets.spreadsheets.values.get({
+                    spreadsheetId: PLAN_SPREADSHEET_ID,
+                    range: PLAN_MAIN_RANGE
+                });
+                const mainRows = mainResp.result.values || [];
+                if (mainRows.length < 2) throw new Error('Sheet 02_01_ke_hoach không có dữ liệu');
+                const headersMain = mainRows[0];
+                rawMainTasks = mainRows.slice(1).map(row => {
+                    const obj = {};
+                    headersMain.forEach((h, idx) => { obj[h] = row[idx] || ''; });
+                    return {
+                        id: obj['ma_nhiem_vu'] || '',
+                        nam: obj['nam_tao'] || '',
+                        duAn: obj['ten_du_an'] || '',
+                        loaiDuAn: obj['loai_du_an'] || '',
+                        phongBan: obj['phong_ban'] || '',
+                        giaiDoan: obj['giai_doan'] || '',
+                        nhomNhiemVu: obj['nhom_nhiem_vu'] || '',
+                        thuTu: obj['thu_tu_nhiem_vu'] || '',
+                        tenNhiemVu: obj['ten_nhiem_vu'] || '',
+                        moTa: obj['mo_ta'] || '',
+                        mucTieu: obj['muc_tieu'] || '',
+                        doUuTien: obj['do_uu_tien'] || '',
+                        nguoiPhuTrach: obj['nguoi_phu_trach'] || '',
+                        phongBanPhoiHop: obj['phong_ban_phoi_hop'] || '',
+                        ngayBatDau: obj['ngay_bat_dau'] || '',
+                        hanHoanThanh: obj['han_hoan_thanh'] || '',
+                        trangThai: obj['trang_thai'] || '',
+                        tiLeHoanThanh: obj['ti_le_hoan_thanh'] || '',
+                        ngayHoanThanhThucTe: obj['ngay_hoan_thanh_thuc_te'] || '',
+                        ghiChuNV: obj['ghi_chu'] || '',
+                    };
+                }).filter(t => t.id && t.id.trim() !== "");
+
+                const subResp = await gapi.client.sheets.spreadsheets.values.get({
+                    spreadsheetId: PLAN_SPREADSHEET_ID,
+                    range: PLAN_SUB_RANGE
+                });
+                const subRows = subResp.result.values || [];
+                if (subRows.length > 1) {
+                    const headersSub = subRows[0];
+                    rawSubTasks = subRows.slice(1).map(row => {
+                        const obj = {};
+                        headersSub.forEach((h, idx) => { obj[h] = row[idx] || ''; });
+                        return {
+                            id: obj['ma_nhiem_vu_chi_tiet'] || '',
+                            maNhiemVuId: obj['ma_nhiem_vu_id'] || '',
+                            thuTu: obj['thu_tu_nhiem_vu_chi_tiet'] || '',
+                            tenNhiemVuChiTiet: obj['ten_nhiem_vu_chi_tiet'] || '',
+                            moTaChiTiet: obj['mo_ta_chi_tiet'] || '',
+                            dauRaCanDat: obj['dau_ra_can_dat'] || '',
+                            nguoiPhuTrach: obj['nguoi_phu_trach'] || '',
+                            nguoiPhoiHop: obj['nguoi_phoi_hop'] || '',
+                            thoiGianBatDau: obj['thoi_gian_bat_dau'] || '',
+                            deadlineDuKien: obj['deadline_du_kien'] || '',
+                            mucDoUuTien: obj['muc_do_uu_tien'] || '',
+                            trangThai: obj['trang_thai'] || '',
+                            ngayHoanThanhThucTe: obj['ngay_hoan_thanh_thuc_te'] || '',
+                            xacNhanHoanThanh: obj['xac_nhan_hoan_thanh'] || '',
+                            ruiRoChinh: obj['rui_ro_chinh'] || '',
+                            lyDoTre: obj['ly_do_tre'] || '',
+                            ghiChuNVCT: obj['ghi_chu'] || '',
+                        };
+                    }).filter(s => s.id);
+                } else rawSubTasks = [];
+
+                populateFilters();
+                renderCurrentGroupMode();
+            } catch (err) {
+                console.error(err);
+                showError('Lỗi đọc dữ liệu: ' + err.message);
+            }
+        }
+
+        function populateFilters() {
+            const departments = [...new Set(rawMainTasks.map(t => t.phongBan).filter(v => v && v.trim() !== ""))];
+            const projects = [...new Set(rawMainTasks.map(t => t.duAn).filter(Boolean))];
+            const years = [...new Set(rawMainTasks.map(t => t.nam).filter(v => v && v.trim() !== ""))];
+            const types = [...new Set(rawMainTasks.map(t => t.loaiDuAn).filter(v => v && v.trim() !== ""))];
+
+            const departmentSelect = document.getElementById('departmentFilter');
+            departmentSelect.innerHTML = '<option value="">Tất cả phòng ban</option>';
+            departments.sort((a, b) => a.localeCompare(b, 'vi')).forEach(d => {
+                departmentSelect.innerHTML += `<option value="${escapeAttr(d)}">${escapeHtml(d)}</option>`;
+            });
+            if (currentDepartmentFilter && !departments.includes(currentDepartmentFilter)) {
+                departmentSelect.innerHTML += `<option value="${escapeAttr(currentDepartmentFilter)}">${escapeHtml(currentDepartmentFilter)}</option>`;
+            }
+            departmentSelect.value = currentDepartmentFilter || '';
+
+            const projectSelect = document.getElementById('projectFilter');
+            projectSelect.innerHTML = '<option value="">Tất cả dự án</option>';
+            projects.sort((a, b) => a.localeCompare(b, 'vi')).forEach(p => {
+                projectSelect.innerHTML += `<option value="${escapeAttr(p)}">${escapeHtml(p)}</option>`;
+            });
+
+            const yearSelect = document.getElementById('yearFilter');
+            yearSelect.innerHTML = '<option value="">Tất cả năm tạo</option>';
+            years.sort((a, b) => a.localeCompare(b, 'vi')).forEach(y => {
+                yearSelect.innerHTML += `<option value="${escapeAttr(y)}">${escapeHtml(y)}</option>`;
+            });
+
+            const typeSelect = document.getElementById('typeFilter');
+            typeSelect.innerHTML = '<option value="">Tất cả loại dự án</option>';
+            types.sort((a, b) => a.localeCompare(b, 'vi')).forEach(t => {
+                typeSelect.innerHTML += `<option value="${escapeAttr(t)}">${escapeHtml(t)}</option>`;
+            });
+
+            updateHeaderTitle();
+        }
+
+        function applyAllFilters() {
+            currentDepartmentFilter = document.getElementById('departmentFilter').value || '';
+            updateHeaderTitle();
+            renderCurrentGroupMode();
+        }
+
+        function getFilteredTasks() {
+            const departmentVal = document.getElementById('departmentFilter').value;
+            const projectVal = document.getElementById('projectFilter').value;
+            const yearVal = document.getElementById('yearFilter').value;
+            const typeVal = document.getElementById('typeFilter').value;
+            return rawMainTasks.filter(task => {
+                if (departmentVal && task.phongBan !== departmentVal) return false;
+                if (projectVal && task.duAn !== projectVal) return false;
+                if (yearVal && task.nam !== yearVal) return false;
+                if (typeVal && task.loaiDuAn !== typeVal) return false;
+                return true;
+            });
+        }
+
+        function getSubtasksByMainId(mainId) {
+            return rawSubTasks.filter(sub => sub.maNhiemVuId === mainId).sort((a, b) => (parseInt(a.thuTu) || 0) - (parseInt(b.thuTu) || 0));
+        }
+
+        function groupTasksByField(tasks, fieldKey, fallbackLabel = 'Không xác định') {
+            const map = new Map();
+            tasks.forEach(task => {
+                const value = (task[fieldKey] && task[fieldKey].trim()) ? task[fieldKey] : fallbackLabel;
+                if (!map.has(value)) map.set(value, []);
+                map.get(value).push(task);
+            });
+            return map;
+        }
+
+        function sortGroupKeys(keys) {
+            return keys.sort((a, b) => {
+                const numA = a.match(/^\d+$/);
+                const numB = b.match(/^\d+$/);
+                if (numA && numB) return parseInt(a) - parseInt(b);
+                return a.localeCompare(b, 'vi');
+            });
+        }
+
+        function updateHeaderTitle() {
+            const titleEl = document.getElementById('planTitleText');
+            const selectedDept = document.getElementById('departmentFilter')?.value || currentDepartmentFilter || '';
+            const title = selectedDept ? `KẾ HOẠCH CÔNG VIỆC - ${selectedDept}` : 'KẾ HOẠCH CÔNG VIỆC';
+            if (titleEl) {
+                titleEl.textContent = title;
+                titleEl.setAttribute('title', title);
+            }
+            document.title = title;
+        }
+
+        function renderProjectCard(projectName, tasksForProject, uniqueIdSuffix = '') {
+            if (!tasksForProject.length) return '';
+            const projectId = `proj-${projectName.replace(/[^a-z0-9]/gi, '-')}${uniqueIdSuffix}`;
+            let phaseMap = new Map();
+            tasksForProject.forEach(task => {
+                const phase = task.giaiDoan && task.giaiDoan.trim() !== "" ? task.giaiDoan : "Chưa phân giai đoạn";
+                if (!phaseMap.has(phase)) phaseMap.set(phase, []);
+                phaseMap.get(phase).push(task);
+            });
+            const sortPhases = (phases) => phases.sort((a, b) => {
+                const numA = a.match(/\d+/); const numB = b.match(/\d+/);
+                if (numA && numB) return parseInt(numA[0]) - parseInt(numB[0]);
+                if (numA) return -1; if (numB) return 1;
+                return a.localeCompare(b);
+            });
+            const phases = sortPhases(Array.from(phaseMap.keys()));
+
+            let innerHtml = '';
+            for (let phase of phases) {
+                const tasksInPhase = phaseMap.get(phase);
+                const phaseId = `phase-${projectId}-${phase.replace(/[^a-z0-9]/gi, '-')}`;
+                innerHtml += `
+                <div class="phase-group-modern">
+                    <div class="phase-header-modern" onclick="toggleSection('${phaseId}')">
+                        <div class="phase-title"><i class="fas fa-layer-group"></i> ${escapeHtml(phase)}</div>
+                        <span class="phase-toggle-icon" id="phase-icon-${phaseId}"><i class="fas fa-chevron-right"></i></span>
+                    </div>
+                    <div id="${phaseId}" class="phase-content-modern" style="display: none;">
+                        ${renderMainTasksTable(tasksInPhase)}
+                    </div>
+                </div>
+            `;
+            }
+
+            return `
+        <div class="project-card-modern">
+            <div class="project-header-modern" onclick="toggleSection('${projectId}')">
+                <div class="project-title"><i class="fas fa-cube"></i> ${escapeHtml(projectName)}</div>
+                <span class="toggle-icon" id="icon-${projectId}"><i class="fas fa-chevron-down"></i></span>
+            </div>
+            <div id="${projectId}" class="project-content-modern" style="display: none;">
+                ${innerHtml || '<div class="table-wrapper"><i>Không có giai đoạn nào</i></div>'}
+            </div>
+        </div>`;
+        }
+
+        function renderMainTasksTable(tasks) {
+            if (!tasks.length) return '<div class="table-wrapper"><i>Không có nhiệm vụ</i></div>';
+            tasks.sort((a, b) => (parseInt(a.thuTu) || 0) - (parseInt(b.thuTu) || 0));
+            let html = `<div class="table-wrapper"><table class="modern-table"><thead><tr>
+            <th>STT</th><th>Nhiệm vụ</th><th>Mục tiêu</th><th>Phụ trách</th><th>Phối hợp</th><th>Bắt đầu</th><th>Deadline</th>
+            <th>Trạng thái</th><th>Tiến độ</th><th>Ưu tiên</th><th>Ghi chú</th><th>Chi tiết</th>
+        </tr></thead><tbody>`;
+            tasks.forEach((task, idx) => {
+                const subtasks = getSubtasksByMainId(task.id);
+                const hasSubtasks = subtasks.length > 0;
+                const safeId = task.id.replace(/[^a-z0-9]/gi, '-');
+                const subtaskRowId = `subrow-${safeId}`;
+                html += `<tr>
+                <td style="text-align:center">${idx + 1}</td>
+                <td><div class="task-name">${escapeHtml(task.tenNhiemVu || '')}</div><div class="task-desc">${escapeHtml(task.moTa || '')}</div></td>
+                <td>${escapeHtml(task.mucTieu || '—')}</td>
+                <td>${escapeHtml(task.nguoiPhuTrach || '—')}</td>
+                <td>${escapeHtml(task.phongBanPhoiHop || '—')}</td>
+                <td>${escapeHtml(task.ngayBatDau || '—')}</td>
+                <td>${escapeHtml(task.hanHoanThanh || '—')}</td>
+                <td>${getStatusBadge(task.trangThai)}</td>
+                <td><span class="progress-ring">${task.tiLeHoanThanh || '0'}</span></td>
+                <td>${getPriorityTag(task.doUuTien)}</td>
+                <td>${getPriorityTag(task.ghiChuNV)}</td>
+                <td style="text-align:center">${hasSubtasks ? `<button class="toggle-subtask-btn" data-target="${subtaskRowId}"><i class="fas fa-list-ul"></i> Xem</button>` : '—'}</td>
+            </tr>
+            <tr id="${subtaskRowId}" style="display: none;"><td colspan="12"><div class="subtask-section">${hasSubtasks ? renderSubtasksTable(subtasks) : '<i>Không có chi tiết</i>'}</div></td></tr>`;
+            });
+            html += `</tbody></table></div>`;
+            return html;
+        }
+
+        function renderSubtasksTable(subtasks) {
+            if (!subtasks.length) return '';
+            let subHtml = `<div class="table-wrapper"><table class="modern-table"><thead><tr>
+            <th>STT</th><th>Nhiệm vụ chi tiết</th><th>Mục tiêu</th><th>Phụ trách</th><th>Phối hợp</th>
+            <th>Bắt đầu</th><th>Deadline</th><th>Trạng thái</th><th>Ưu tiên</th><th>Lý do trễ</th><th>Rủi ro</th><th>Ghi chú</th>
+         </tr></thead><tbody>`;
+            subtasks.forEach((sub, idx) => {
+                subHtml += `<tr>
+                <td style="text-align:center">${idx + 1}</td>
+                <td><div class="task-name">${escapeHtml(sub.tenNhiemVuChiTiet || '')}</div><div class="task-desc">${escapeHtml(sub.moTaChiTiet || '')}</div></td>
+                <td>${escapeHtml(sub.dauRaCanDat || '—')}</td>
+                <td>${escapeHtml(sub.nguoiPhuTrach || '—')}</td>
+                <td>${escapeHtml(sub.nguoiPhoiHop || '—')}</td>
+                <td>${escapeHtml(sub.thoiGianBatDau || '—')}</td>
+                <td>${escapeHtml(sub.deadlineDuKien || '—')}</td>
+                <td>${getStatusBadge(sub.trangThai)}</td>
+                <td>${getPriorityTag(sub.mucDoUuTien)}</td>
+                <td>${escapeHtml(sub.lyDoTre || '—')}</td>
+                <td>${escapeHtml(sub.ruiRoChinh || '—')}</td>
+                <td>${escapeHtml(sub.ghiChuNVCT || '—')}</td>
+             </tr>`;
+            });
+            subHtml += `</tbody></table></div>`;
+            return subHtml;
+        }
+
+        function getStatusBadge(status) {
+            const s = (status || '').toLowerCase();
+            let cls = 'badge-status';
+            if (s.includes('hoàn thành')) cls += ' done';
+            else if (s.includes('đang thực hiện')) cls += ' progress';
+            else cls += ' pending';
+            return `<span class="${cls}">${escapeHtml(status || 'Chưa bắt đầu')}</span>`;
+        }
+
+        function getPriorityTag(priority) {
+            if (!priority) return '<span class="priority-tag">—</span>';
+            const p = priority.toLowerCase();
+            if (p.includes('cao')) return `<span class="priority-tag priority-high"><i class="fas fa-arrow-up"></i> Cao</span>`;
+            if (p.includes('trung')) return `<span class="priority-tag priority-medium"><i class="fas fa-minus"></i> TB</span>`;
+            if (p.includes('thấp')) return `<span class="priority-tag priority-low"><i class="fas fa-arrow-down"></i> Thấp</span>`;
+            return `<span class="priority-tag">${escapeHtml(priority)}</span>`;
+        }
+
+        function renderCurrentGroupMode() {
+            const container = document.getElementById('plan-container');
+            const filtered = getFilteredTasks();
+            if (!filtered.length) {
+                container.innerHTML = `<div class="error-msg"><i class="fas fa-info-circle"></i> Không có nhiệm vụ nào phù hợp với bộ lọc.</div>`;
+                syncToggleIcons();
+                return;
+            }
+
+            const departmentMap = groupTasksByField(filtered, 'phongBan', 'Không xác định');
+            let html = '';
+            const departmentNames = sortGroupKeys(Array.from(departmentMap.keys()));
+
+            departmentNames.forEach(deptName => {
+                const deptTasks = departmentMap.get(deptName) || [];
+                html += renderDepartmentSection(deptName, deptTasks);
+            });
+
+            container.innerHTML = html || `<div class="error-msg">Không có dữ liệu để hiển thị.</div>`;
+            attachSubtaskEvents();
+            collapseAll();
+            syncToggleIcons();
+        }
+
+        function renderDepartmentSection(departmentName, deptTasks) {
+            const deptId = `dept-${makeSafeId(departmentName)}-${makeSafeId(currentGroupMode)}`;
+            const groupField = currentGroupMode === 'year' ? 'nam' : 'loaiDuAn';
+            const groupLabel = currentGroupMode === 'year' ? 'Năm tạo' : 'Loại dự án';
+            const groupIcon = currentGroupMode === 'year' ? 'calendar-alt' : 'tags';
+            const groupMap = groupTasksByField(deptTasks, groupField, 'Không xác định');
+            const groupNames = sortGroupKeys(Array.from(groupMap.keys()));
+
+            let groupHtml = '';
+            groupNames.forEach(groupName => {
+                const projectsMap = new Map();
+                const groupTasks = groupMap.get(groupName) || [];
+                groupTasks.forEach(task => {
+                    const projectName = task.duAn && task.duAn.trim() ? task.duAn : 'Dự án chưa phân loại';
+                    if (!projectsMap.has(projectName)) projectsMap.set(projectName, []);
+                    projectsMap.get(projectName).push(task);
+                });
+                groupHtml += renderGroupCard(groupName, projectsMap, groupLabel, groupIcon, deptId);
+            });
+
+            const projectSet = new Set(deptTasks.map(t => t.duAn || ''));
+            const projectCount = projectSet.size;
+
+            return `
+                <div class="department-section">
+                    <div class="department-header" onclick="toggleSection('${deptId}')">
+                        <div class="department-title"><i class="fas fa-building"></i> ${escapeHtml(departmentName)}</div>
+                        <div class="department-meta">
+                            <div class="department-badge"><i class="fas fa-layer-group"></i> ${projectCount} dự án</div>
+                            <span class="toggle-icon" id="icon-${deptId}"><i class="fas fa-chevron-right"></i></span>
+                        </div>
+                    </div>
+                    <div id="${deptId}" class="department-content" style="display: none;">
+                        ${groupHtml || '<div class="table-wrapper"><i>Không có nhóm con</i></div>'}
+                    </div>
+                </div>`;
+        }
+
+        function renderGroupCard(groupName, projectsMap, groupLabel, icon, parentId) {
+            const groupId = `group-${makeSafeId(parentId)}-${makeSafeId(groupName)}`;
+            const projectCount = projectsMap.size;
+            let projectHtml = '';
+            const projectNames = sortGroupKeys(Array.from(projectsMap.keys()));
+            projectNames.forEach(projectName => {
+                const projTasks = projectsMap.get(projectName) || [];
+                projectHtml += renderProjectCard(projectName, projTasks, `-${makeSafeId(groupId)}-${makeSafeId(projectName)}`);
+            });
+
+            return `
+                <div class="group-section">
+                    <div class="group-header-card" onclick="toggleSection('${groupId}')">
+                        <div class="group-title"><i class="fas fa-${icon}"></i> ${escapeHtml(groupName)}</div>
+                        <div class="group-meta">
+                            <div class="group-badge"><i class="fas fa-layer-group"></i> ${projectCount} dự án</div>
+                            <span class="toggle-icon" id="icon-${groupId}"><i class="fas fa-chevron-right"></i></span>
+                        </div>
+                    </div>
+                    <div id="${groupId}" class="group-content" style="display: none;">
+                        ${projectHtml || '<div class="table-wrapper"><i>Không có dự án</i></div>'}
+                    </div>
+                </div>`;
+        }
+
+        function attachSubtaskEvents() {
+            document.querySelectorAll('.toggle-subtask-btn').forEach(btn => {
+                btn.removeEventListener('click', btn._listener);
+                const handler = (e) => {
+                    e.stopPropagation();
+                    const targetId = btn.getAttribute('data-target');
+                    const targetRow = document.getElementById(targetId);
+                    if (targetRow) {
+                        const visible = targetRow.style.display === 'table-row';
+                        targetRow.style.display = visible ? 'none' : 'table-row';
+                        btn.innerHTML = visible ? '<i class="fas fa-list-ul"></i> Xem' : '<i class="fas fa-eye-slash"></i> Ẩn';
+                    }
+                };
+                btn.addEventListener('click', handler);
+                btn._listener = handler;
+            });
+        }
+
+        function syncToggleIcons() {
+            [
+                '.department-content',
+                '.group-content',
+                '.project-content-modern',
+                '.phase-content-modern'
+            ].forEach(selector => {
+                document.querySelectorAll(selector).forEach(el => {
+                    const id = el.id;
+                    const iconSpan = document.getElementById(`icon-${id}`) || document.getElementById(`phase-icon-${id}`);
+                    if (!iconSpan) return;
+                    const isOpen = el.style.display !== 'none';
+                    iconSpan.innerHTML = isOpen ? '<i class="fas fa-chevron-down"></i>' : '<i class="fas fa-chevron-right"></i>';
+                });
+            });
+        }
+
+        window.toggleSection = function (id) {
+            const div = document.getElementById(id);
+            const iconSpan = document.getElementById(`icon-${id}`) || document.getElementById(`phase-icon-${id}`);
+            if (div) {
+                const isVisible = div.style.display !== 'none';
+                div.style.display = isVisible ? 'none' : 'block';
+                if (iconSpan) iconSpan.innerHTML = isVisible ? '<i class="fas fa-chevron-right"></i>' : '<i class="fas fa-chevron-down"></i>';
+            }
+        };
+        window.toggleProjectContent = window.toggleSection;
+        window.togglePhaseContent = window.toggleSection;
+
+        window.expandAll = function () {
+            document.querySelectorAll('.department-content, .group-content, .project-content-modern, .phase-content-modern').forEach(el => el.style.display = 'block');
+            document.querySelectorAll('.toggle-icon').forEach(i => i.innerHTML = '<i class="fas fa-chevron-down"></i>');
+            document.querySelectorAll('.phase-toggle-icon').forEach(i => i.innerHTML = '<i class="fas fa-chevron-down"></i>');
+        };
+        window.collapseAll = function () {
+            document.querySelectorAll('.department-content, .group-content, .project-content-modern, .phase-content-modern').forEach(el => el.style.display = 'none');
+            document.querySelectorAll('.toggle-icon').forEach(i => i.innerHTML = '<i class="fas fa-chevron-right"></i>');
+            document.querySelectorAll('.phase-toggle-icon').forEach(i => i.innerHTML = '<i class="fas fa-chevron-right"></i>');
+        };
+        window.applyAllFilters = applyAllFilters;
+
+        function escapeHtml(str) { if (!str) return ''; return str.replace(/[&<>]/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[m])); }
+        function escapeAttr(str) { return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
+        function showError(msg) { document.getElementById('plan-container').innerHTML = `<div class="error-msg"><i class="fas fa-exclamation-triangle"></i> ${escapeHtml(msg)}</div>`; }
+
+        document.querySelectorAll('.mode-chip').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.mode-chip').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                currentGroupMode = btn.getAttribute('data-mode');
+                renderCurrentGroupMode();
+            });
+        });
+        window.addEventListener('DOMContentLoaded', () => { initGapiAndFetch(); });
+    </script>
+</body>
+
+</html>
