@@ -316,6 +316,10 @@
             background: #ffffff;
         }
 
+        .project-name {
+            display: block;
+        }
+
         /* Phase group */
         .phase-group-modern {
             background: #ffffff;
@@ -841,6 +845,55 @@
                 min-width: 1000px;
             }
         }
+
+        @media (max-width: 768px) {
+
+            .project-header-modern {
+                padding: 0.8rem;
+            }
+
+            .project-header-modern>div {
+                flex-direction: column !important;
+                align-items: flex-start !important;
+                gap: 8px;
+            }
+
+            /* Tên dự án */
+            .project-header-modern span {
+                white-space: normal !important;
+                overflow: visible !important;
+                text-overflow: unset !important;
+                font-size: 0.85rem;
+                line-height: 1.3;
+            }
+
+            /* Khối bên phải (người phụ trách + ngày) */
+            .project-header-modern>div>div:last-child {
+                width: 100%;
+                justify-content: space-between !important;
+                gap: 8px;
+            }
+
+            /* Badge xuống dòng gọn */
+            .group-badge {
+                font-size: 0.7rem;
+                padding: 4px 8px;
+                display: flex;
+                align-items: center;
+                gap: 6px;
+            }
+
+            /* Cho phép wrap */
+            .project-header-modern>div>div:last-child>div {
+                flex-wrap: wrap;
+                gap: 6px;
+            }
+
+            /* Icon toggle */
+            .toggle-icon {
+                margin-left: auto;
+            }
+        }
     </style>
 </head>
 
@@ -1341,7 +1394,7 @@
                         <div style="display:flex;align-items:center;justify-content:space-between;width:100%;gap:10px;">
                             <div style="display:flex;align-items:center;gap:10px;flex:1;min-width:0;">
                                 <i class="fas fa-cube"></i>
-                                <span style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
+                                <span class="project-name">
                                     ${escapeHtml(project.duAn || project.id || 'Dự án chưa đặt tên')}
                                 </span>
                             </div>
