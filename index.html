@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Quản lý Kế hoạch - Nhóm theo năm & loại dự án</title>
+    <title>Quản lý Kế hoạch</title>
     <link rel="icon" type="image/svg+xml" href="https://quangminhpro.com/wp-content/uploads/2025/08/logo-3.svg">
     <!-- Google Fonts & Font Awesome -->
     <link
@@ -18,10 +18,38 @@
             box-sizing: border-box;
         }
 
+        :root {
+            --bg: #f5f7fb;
+            --panel: #ffffff;
+            --panel-soft: #f8fbff;
+            --border: #dbe3ee;
+            --border-strong: #c7d2e2;
+
+            --text: #0f172a;
+            --text-soft: #475569;
+            --text-muted: #64748b;
+
+            --primary: #1e3a5f;
+            --primary-hover: #162c47;
+            --primary-soft: #eaf2fb;
+
+            --accent: #2f6ea3;
+            --accent-soft: #eef6fd;
+
+            --success: #15803d;
+            --success-soft: #e8f7ee;
+
+            --warning: #b45309;
+            --warning-soft: #fff5e8;
+
+            --danger: #c2410c;
+            --danger-soft: #fff0ed;
+        }
+
         body {
-            background: linear-gradient(145deg, #f0f4fa 0%, #e9eef5 100%);
+            background: linear-gradient(145deg, #f6f8fc 0%, #edf2f8 100%);
             font-family: 'Inter', sans-serif;
-            color: #0a1c2f;
+            color: var(--text);
             height: 100vh;
             overflow: hidden;
             display: flex;
@@ -31,11 +59,11 @@
         /* ========= HEADER CỐ ĐỊNH ========= */
         .app-header {
             flex-shrink: 0;
-            background: rgba(255, 255, 255, 0.8);
+            background: rgba(255, 255, 255, 0.88);
             backdrop-filter: blur(12px);
-            border-bottom: 1px solid rgba(203, 213, 225, 0.7);
+            border-bottom: 1px solid rgba(219, 227, 238, 0.9);
             padding: 1rem 2rem;
-            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.02);
+            box-shadow: 0 6px 18px rgba(15, 23, 42, 0.04);
             z-index: 10;
         }
 
@@ -51,7 +79,7 @@
         .title-badge h1 {
             font-size: 1.5rem;
             font-weight: 700;
-            background: linear-gradient(135deg, #1E2A5E, #2D3A6E);
+            background: linear-gradient(135deg, #16304d, #2f5f8f);
             background-clip: text;
             -webkit-background-clip: text;
             color: transparent;
@@ -91,8 +119,7 @@
         }
 
         .btn {
-            border: none;
-            background: white;
+            background: var(--panel);
             padding: 0.5rem 1.2rem;
             border-radius: 20px;
             font-size: 0.7rem;
@@ -103,14 +130,14 @@
             cursor: pointer;
             transition: all 0.2s ease;
             box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02), 0 1px 3px rgba(0, 0, 0, 0.03);
-            border: 1px solid #e2e8f0;
-            color: #1e2a3e;
+            border: 1px solid var(--border);
+            color: var(--text);
         }
 
         .btn-primary {
-            background: #1e3a5f;
+            background: var(--primary);
             border: none;
-            color: white;
+            color: #fff;
             box-shadow: 0 4px 8px rgba(0, 32, 64, 0.08);
         }
 
@@ -125,12 +152,12 @@
 
         .btn:hover {
             transform: translateY(-1px);
-            background: #f8fafc;
-            border-color: #94a3b8;
+            background: #f8fbff;
+            border-color: var(--border-strong);
         }
 
         .btn-primary:hover {
-            background: #0f2c48;
+            background: var(--primary-hover);
             transform: translateY(-1px);
             box-shadow: 0 8px 18px rgba(0, 32, 64, 0.12);
         }
@@ -138,11 +165,11 @@
         select.filter-select {
             padding: 0.45rem 1rem;
             border-radius: 15px;
-            border: 1px solid #cbd5e1;
-            background: white;
+            background: var(--panel);
+            border: 1px solid var(--border);
+            color: var(--text);
             font-weight: 500;
             font-size: 0.82rem;
-            color: #0f172a;
             cursor: pointer;
             outline: none;
             transition: all 0.2s;
@@ -191,7 +218,7 @@
             border: none;
             cursor: pointer;
             transition: 0.2s ease;
-            color: #2c3e50;
+            color: var(--text-soft);
             letter-spacing: -0.2px;
             display: flex;
             align-items: center;
@@ -203,8 +230,8 @@
         }
 
         .mode-chip.active {
-            background: #1e3a5f;
-            color: white;
+            background: var(--primary);
+            color: #fff;
             box-shadow: 0 4px 12px rgba(0, 48, 80, 0.2);
         }
 
@@ -237,14 +264,14 @@
 
         /* ========= CARD DỰ ÁN ========= */
         .project-card-modern {
-            background: #ffffff;
+            background: var(--panel);
             border-radius: 12px;
             margin-left: 16px;
             margin-right: 16px;
             margin-bottom: 8px;
-            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.05), 0 2px 4px rgba(0, 0, 0, 0.02);
+            box-shadow: 0 10px 24px rgba(15, 23, 42, 0.05);
             transition: all 0.25s;
-            border: 1px solid rgba(203, 213, 225, 0.5);
+            border: 1px solid rgba(219, 227, 238, 0.8);
             overflow: hidden;
         }
 
@@ -254,13 +281,13 @@
             justify-content: space-between;
             align-items: center;
             cursor: pointer;
-            background: #fbfdff;
+            background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
             transition: background 0.2s;
-            border-bottom: 1px solid #eef2f8;
+            border-bottom: 1px solid #e6edf5;
         }
 
         .project-header-modern:hover {
-            background: #f5f9ff;
+            background: #f3f8fe;
         }
 
         .project-title {
@@ -269,17 +296,17 @@
             gap: 10px;
             font-weight: 700;
             font-size: 0.9rem;
-            color: #0c4a6e;
+            color: #11406a;
         }
 
         .project-title i {
             font-size: 1.3rem;
-            color: #2c6e9e;
+            color: #2d6fa3;
         }
 
         .toggle-icon {
             font-size: 1.2rem;
-            color: #5b6e8c;
+            color: var(--text-muted);
             transition: transform 0.2s;
         }
 
@@ -346,7 +373,9 @@
         }
 
         .modern-table thead th {
-            background: #e6f0fb;
+            background: #e8f1fb;
+            color: #0f2b3d;
+            border-color: #d8e2ed;
             /* xanh nhẹ hơn hiện tại */
         }
 
@@ -355,15 +384,16 @@
         }
 
         .modern-table tbody tr:hover {
-            background: #eaf3ff;
+            background: #eef5fc;
         }
 
         .modern-table th {
             padding: 6px 4px;
-            border: 1px solid #dbe3ec;
-            background: #eaf2fb;
-            font-weight: 700;
+            border: 1px solid;
+            background: #e8f1fb;
             color: #0f2b3d;
+            border-color: #d8e2ed;
+            font-weight: 700;
         }
 
         .modern-table td {
@@ -471,12 +501,12 @@
         }
 
         .subtask-section .modern-table thead th {
-            background: #fff4d6;
+            background: #f4efe1;
             /* header vàng */
         }
 
         .subtask-section .modern-table tbody tr:nth-child(even) {
-            background: #fffaf0;
+            background: #f8fbfe;
         }
 
         .subtask-section .modern-table tbody tr:hover {
@@ -573,7 +603,7 @@
         /* Điều chỉnh riêng cho các cột mô tả bên trong nhiệm vụ chính để không vỡ layout */
         .modern-table .task-name {
             font-weight: 700;
-            color: #0f2b3d;
+            color: #102b43;
             margin-bottom: 6px;
             font-size: 0.85rem;
             word-break: break-word;
@@ -581,7 +611,7 @@
 
         .modern-table .task-desc {
             font-size: 0.75rem;
-            color: #5b6e8c;
+            color: #66758a;
             line-height: 1.35;
             word-break: break-word;
         }
@@ -592,24 +622,24 @@
             border-radius: 20px;
             font-size: 0.7rem;
             font-weight: 600;
-            background: #eef2ff;
-            color: #1f3a5f;
+            background: var(--primary-soft);
+            color: var(--primary);
             white-space: nowrap;
         }
 
         .badge-status.done {
-            background: #e0f2e9;
-            color: #146b3a;
+            background: var(--success-soft);
+            color: var(--success);
         }
 
         .badge-status.progress {
-            background: #fff1e0;
-            color: #b45f06;
+            background: var(--warning-soft);
+            color: var(--warning);
         }
 
         .badge-status.pending {
-            background: #ffe6e5;
-            color: #bc2c1e;
+            background: #fff0ed;
+            color: #c2410c;
         }
 
         .priority-tag {
@@ -622,22 +652,23 @@
         }
 
         .priority-high {
-            color: #d32f2f;
-            background: #fff0f0;
+            background: var(--danger-soft);
+            color: var(--danger);
         }
 
         .priority-medium {
-            color: #ed6c02;
-            background: #fff4e5;
+            background: var(--warning-soft);
+            color: var(--warning);
         }
 
         .priority-low {
-            color: #2e7d32;
-            background: #e8f5e9;
+            background: var(--success-soft);
+            color: var(--success);
         }
 
         .progress-ring {
-            background: #e9ecef;
+            background: #edf2f7;
+            color: #334155;
             border-radius: 20px;
             padding: 2px 8px;
             font-weight: 600;
@@ -646,20 +677,21 @@
         }
 
         .toggle-subtask-btn {
-            background: #eef2ff;
+            background: var(--primary-soft);
+            color: var(--primary);
             border: none;
             padding: 5px 12px;
             border-radius: 20px;
             font-size: 0.7rem;
             font-weight: 600;
-            color: #1e4b6e;
             cursor: pointer;
             transition: 0.2s;
             white-space: nowrap;
         }
 
         .subtask-section {
-            background: #fefcf5;
+            background: #fcfcfd;
+            border: 1px solid #e9edf5;
             border-radius: 20px;
             padding: 12px;
             margin-top: 6px;
@@ -680,19 +712,21 @@
             gap: 10px;
             flex-wrap: wrap;
             cursor: pointer;
+            background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+            border: 1px solid #e3ebf4;
             box-shadow: 0 1px 4px rgba(0, 0, 0, 0.100);
         }
 
         .department-header {
-            background: linear-gradient(105deg, #a3d1f7 0%, #f3faff 100%);
-            border-left: 5px solid #3164c2;
+            background: linear-gradient(105deg, #dcebfa 0%, #f8fbff 100%);
+            border-left: 5px solid #2f6ea3;
         }
 
         .department-title,
         .group-title {
             font-size: 1.02rem;
             font-weight: 700;
-            color: #0f2f4f;
+            color: #12385c;
             letter-spacing: -0.3px;
             display: flex;
             align-items: center;
@@ -714,21 +748,21 @@
         }
 
         .group-badge {
-            background: #2c6e9e20;
+            background: #e8f1fb;
+            color: #1f4e79;
             padding: 4px 14px;
             border-radius: 18px;
             font-size: 0.76rem;
             font-weight: 600;
-            color: #1e4a76;
         }
 
         .department-badge {
-            background: #2c6e9e20;
+            background: #e8f1fb;
+            color: #1f4e79;
             padding: 4px 14px;
             border-radius: 18px;
             font-size: 0.76rem;
             font-weight: 600;
-            color: #1e4a76;
         }
 
         .group-content,
@@ -858,6 +892,7 @@
                 </div>
             </div>
         </div>
+
         <div class="projects-container" id="plan-container">
             <div class="loading-modern"><i class="fas fa-spinner fa-pulse"></i> Đang đồng bộ dữ liệu ...</div>
         </div>
@@ -872,12 +907,20 @@
         // ======================= CẤU HÌNH GOOGLE SHEETS =======================
         const PLAN_SPREADSHEET_ID = '1hT4izyWGoqklc5CAfqb66i0r5p5PaiuKxXMrqEO_EaI';
         const API_KEY = 'AIzaSyA9g2qFUolpsu3_HVHOebdZb0NXnQgXlFM';
-        const PLAN_MAIN_RANGE = '02_01_ke_hoach!A:V';
-        const PLAN_SUB_RANGE = '02_02_ke_hoach_chi_tiet!A:R';
+
+        // Sheet cha: dự án
+        const PLAN_PROJECT_RANGE = '02_00_set_du_an!A:P';
+
+        // Sheet con: nhiệm vụ chính
+        const PLAN_MAIN_RANGE = '02_01_ke_hoach!A:Z';
+
+        // Sheet chi tiết
+        const PLAN_SUB_RANGE = '02_02_ke_hoach_chi_tiet!A:Z';
 
         const urlParams = new URLSearchParams(window.location.search);
         const initialDepartmentFilter = normalizeQueryValue(urlParams.get('phongBan') || '');
 
+        let rawProjects = [];
         let rawMainTasks = [];
         let rawSubTasks = [];
         let currentGroupMode = 'year';
@@ -907,18 +950,55 @@
 
         async function fetchAllPlanData() {
             try {
+                // ======================= LOAD SHEET CHA: 02_00_set_du_an =======================
+                const projectResp = await gapi.client.sheets.spreadsheets.values.get({
+                    spreadsheetId: PLAN_SPREADSHEET_ID,
+                    range: PLAN_PROJECT_RANGE
+                });
+                const projectRows = projectResp.result.values || [];
+                if (projectRows.length < 2) throw new Error('Sheet 02_00_set_du_an không có dữ liệu');
+
+                const headersProject = projectRows[0];
+                rawProjects = projectRows.slice(1).map(row => {
+                    const obj = {};
+                    headersProject.forEach((h, idx) => { obj[h] = row[idx] || ''; });
+
+                    return {
+                        id: obj['ma_du_an'] || '',
+                        phongBan: obj['phong_ban'] || '',
+                        nguoiTao: obj['nguoi_tao'] || '',
+                        ngayTao: obj['ngay_tao'] || '',
+                        nam: obj['nam_tao'] || '',
+                        duAn: obj['du_an'] || '',
+                        loaiDuAn: obj['loai_du_an'] || '',
+                        giaiDoan: obj['giai_doan'] || '',
+                        nguoiPhuTrach: obj['nguoi_phu_trach'] || '',
+                        phongBanPhoiHop: obj['phong_ban_phoi_hop'] || '',
+                        trangThai: obj['trang_thai'] || '',
+                        ngayBatDau: obj['ngay_bat_dau'] || '',
+                        hanHoanThanh: obj['han_hoan_thanh'] || '',
+                        ngayHoanThanhThucTe: obj['ngay_hoan_thanh_thuc_te'] || '',
+                        xacNhanHoanThanh: obj['xac_nhan_hoan_thanh'] || '',
+                        ngayCapNhat: obj['ngay_cap_nhat'] || ''
+                    };
+                }).filter(p => p.id && p.id.trim() !== '');
+
+                // ======================= LOAD SHEET MAIN: 02_01_ke_hoach =======================
                 const mainResp = await gapi.client.sheets.spreadsheets.values.get({
                     spreadsheetId: PLAN_SPREADSHEET_ID,
                     range: PLAN_MAIN_RANGE
                 });
                 const mainRows = mainResp.result.values || [];
                 if (mainRows.length < 2) throw new Error('Sheet 02_01_ke_hoach không có dữ liệu');
+
                 const headersMain = mainRows[0];
                 rawMainTasks = mainRows.slice(1).map(row => {
                     const obj = {};
                     headersMain.forEach((h, idx) => { obj[h] = row[idx] || ''; });
+
                     return {
                         id: obj['ma_nhiem_vu'] || '',
+                        duAnId: obj['du_an_id'] || '',
                         nam: obj['nam_tao'] || '',
                         duAn: obj['ten_du_an'] || '',
                         loaiDuAn: obj['loai_du_an'] || '',
@@ -937,10 +1017,11 @@
                         trangThai: obj['trang_thai'] || '',
                         tiLeHoanThanh: obj['ti_le_hoan_thanh'] || '',
                         ngayHoanThanhThucTe: obj['ngay_hoan_thanh_thuc_te'] || '',
-                        ghiChuNV: obj['ghi_chu'] || '',
+                        ghiChuNV: obj['ghi_chu'] || ''
                     };
-                }).filter(t => t.id && t.id.trim() !== "");
+                }).filter(t => t.id && t.id.trim() !== '');
 
+                // ======================= LOAD SHEET DETAIL: 02_01_ke_hoach_chi_tiet =======================
                 const subResp = await gapi.client.sheets.spreadsheets.values.get({
                     spreadsheetId: PLAN_SPREADSHEET_ID,
                     range: PLAN_SUB_RANGE
@@ -951,6 +1032,7 @@
                     rawSubTasks = subRows.slice(1).map(row => {
                         const obj = {};
                         headersSub.forEach((h, idx) => { obj[h] = row[idx] || ''; });
+
                         return {
                             id: obj['ma_nhiem_vu_chi_tiet'] || '',
                             maNhiemVuId: obj['ma_nhiem_vu_id'] || '',
@@ -968,10 +1050,12 @@
                             xacNhanHoanThanh: obj['xac_nhan_hoan_thanh'] || '',
                             ruiRoChinh: obj['rui_ro_chinh'] || '',
                             lyDoTre: obj['ly_do_tre'] || '',
-                            ghiChuNVCT: obj['ghi_chu'] || '',
+                            ghiChuNVCT: obj['ghi_chu'] || ''
                         };
-                    }).filter(s => s.id);
-                } else rawSubTasks = [];
+                    }).filter(s => s.id && s.id.trim() !== '');
+                } else {
+                    rawSubTasks = [];
+                }
 
                 populateFilters();
                 renderCurrentGroupMode();
@@ -981,11 +1065,47 @@
             }
         }
 
+        function getProjectById(projectId) {
+            return rawProjects.find(p => normalizeQueryValue(p.id) === normalizeQueryValue(projectId)) || null;
+        }
+
+        function getProjectByName(projectName) {
+            return rawProjects.find(p => normalizeQueryValue(p.duAn) === normalizeQueryValue(projectName)) || null;
+        }
+
+        function getProjectTitle(task) {
+            const byId = task.duAnId ? getProjectById(task.duAnId) : null;
+            if (byId) return byId.duAn || byId.id || 'Dự án chưa xác định';
+            if (task.duAn && task.duAn.trim()) return task.duAn;
+            return 'Dự án chưa xác định';
+        }
+
+        function getMainTasksForProject(project) {
+            const pid = normalizeQueryValue(project.id);
+            const pname = normalizeQueryValue(project.duAn);
+
+            return rawMainTasks.filter(task => {
+                const taskProjectId = normalizeQueryValue(task.duAnId);
+                const taskProjectName = normalizeQueryValue(task.duAn);
+
+                if (pid && taskProjectId && taskProjectId === pid) return true;
+                if (pname && taskProjectName && taskProjectName === pname) return true;
+
+                return false;
+            }).sort((a, b) => (parseInt(a.thuTu) || 0) - (parseInt(b.thuTu) || 0));
+        }
+
+        function getSubtasksByMainId(mainId) {
+            return rawSubTasks
+                .filter(sub => normalizeQueryValue(sub.maNhiemVuId) === normalizeQueryValue(mainId))
+                .sort((a, b) => (parseInt(a.thuTu) || 0) - (parseInt(b.thuTu) || 0));
+        }
+
         function populateFilters() {
-            const departments = [...new Set(rawMainTasks.map(t => t.phongBan).filter(v => v && v.trim() !== ""))];
-            const projects = [...new Set(rawMainTasks.map(t => t.duAn).filter(Boolean))];
-            const years = [...new Set(rawMainTasks.map(t => t.nam).filter(v => v && v.trim() !== ""))];
-            const types = [...new Set(rawMainTasks.map(t => t.loaiDuAn).filter(v => v && v.trim() !== ""))];
+            const departments = [...new Set(rawProjects.map(p => p.phongBan).filter(v => v && v.trim() !== ""))];
+            const projects = [...new Set(rawProjects.map(p => p.duAn).filter(v => v && v.trim() !== ""))];
+            const years = [...new Set(rawProjects.map(p => p.nam).filter(v => v && v.trim() !== ""))];
+            const types = [...new Set(rawProjects.map(p => p.loaiDuAn).filter(v => v && v.trim() !== ""))];
 
             const departmentSelect = document.getElementById('departmentFilter');
             departmentSelect.innerHTML = '<option value="">Tất cả phòng ban</option>';
@@ -1023,29 +1143,45 @@
             updateHeaderTitle();
             renderCurrentGroupMode();
         }
+        function parseDateVN(str) {
+            if (!str) return null;
+            const [d, m, y] = str.split('/');
+            return new Date(y, m - 1, d);
+        }
 
-        function getFilteredTasks() {
+        function isNeedHighlight(endDate, status) {
+            if (!endDate) return false;
+
+            const done = (status || '').toLowerCase().includes('đã hoàn thành');
+            if (done) return false;
+
+            const today = new Date();
+            const deadline = parseDateVN(endDate);
+
+            if (!deadline) return false;
+
+            return deadline < today; // theo yêu cầu của bạn
+        }
+
+        function getFilteredProjects() {
             const departmentVal = document.getElementById('departmentFilter').value;
             const projectVal = document.getElementById('projectFilter').value;
             const yearVal = document.getElementById('yearFilter').value;
             const typeVal = document.getElementById('typeFilter').value;
-            return rawMainTasks.filter(task => {
-                if (departmentVal && task.phongBan !== departmentVal) return false;
-                if (projectVal && task.duAn !== projectVal) return false;
-                if (yearVal && task.nam !== yearVal) return false;
-                if (typeVal && task.loaiDuAn !== typeVal) return false;
+
+            return rawProjects.filter(project => {
+                if (departmentVal && project.phongBan !== departmentVal) return false;
+                if (projectVal && project.duAn !== projectVal) return false;
+                if (yearVal && project.nam !== yearVal) return false;
+                if (typeVal && project.loaiDuAn !== typeVal) return false;
                 return true;
             });
-        }
-
-        function getSubtasksByMainId(mainId) {
-            return rawSubTasks.filter(sub => sub.maNhiemVuId === mainId).sort((a, b) => (parseInt(a.thuTu) || 0) - (parseInt(b.thuTu) || 0));
         }
 
         function groupTasksByField(tasks, fieldKey, fallbackLabel = 'Không xác định') {
             const map = new Map();
             tasks.forEach(task => {
-                const value = (task[fieldKey] && task[fieldKey].trim()) ? task[fieldKey] : fallbackLabel;
+                const value = (task[fieldKey] && String(task[fieldKey]).trim()) ? task[fieldKey] : fallbackLabel;
                 if (!map.has(value)) map.set(value, []);
                 map.get(value).push(task);
             });
@@ -1054,10 +1190,10 @@
 
         function sortGroupKeys(keys) {
             return keys.sort((a, b) => {
-                const numA = a.match(/^\d+$/);
-                const numB = b.match(/^\d+$/);
+                const numA = String(a).match(/^\d+$/);
+                const numB = String(b).match(/^\d+$/);
                 if (numA && numB) return parseInt(a) - parseInt(b);
-                return a.localeCompare(b, 'vi');
+                return String(a).localeCompare(String(b), 'vi');
             });
         }
 
@@ -1072,106 +1208,170 @@
             document.title = title;
         }
 
-        function renderProjectCard(projectName, tasksForProject, uniqueIdSuffix = '') {
-            if (!tasksForProject.length) return '';
-            const projectId = `proj-${projectName.replace(/[^a-z0-9]/gi, '-')}${uniqueIdSuffix}`;
-            let phaseMap = new Map();
-            tasksForProject.forEach(task => {
-                const phase = task.giaiDoan && task.giaiDoan.trim() !== "" ? task.giaiDoan : "Chưa phân giai đoạn";
-                if (!phaseMap.has(phase)) phaseMap.set(phase, []);
-                phaseMap.get(phase).push(task);
-            });
-            const sortPhases = (phases) => phases.sort((a, b) => {
-                const numA = a.match(/\d+/); const numB = b.match(/\d+/);
-                if (numA && numB) return parseInt(numA[0]) - parseInt(numB[0]);
-                if (numA) return -1; if (numB) return 1;
-                return a.localeCompare(b);
-            });
-            const phases = sortPhases(Array.from(phaseMap.keys()));
+        function renderProjectCard(project, uniqueIdSuffix = '') {
+            const projectId = `proj-${makeSafeId(project.id || project.duAn)}${uniqueIdSuffix}`;
+            const tasksForProject = getMainTasksForProject(project);
+            const isRed = isNeedHighlight(project.hanHoanThanh, project.xacNhanHoanThanh);
 
-            let innerHtml = '';
-            for (let phase of phases) {
-                const tasksInPhase = phaseMap.get(phase);
-                const phaseId = `phase-${projectId}-${phase.replace(/[^a-z0-9]/gi, '-')}`;
-                innerHtml += `
-                <div class="phase-group-modern">
-                    <div class="phase-header-modern" onclick="toggleSection('${phaseId}')">
-                        <div class="phase-title"><i class="fas fa-layer-group"></i> ${escapeHtml(phase)}</div>
-                        <span class="phase-toggle-icon" id="phase-icon-${phaseId}"><i class="fas fa-chevron-right"></i></span>
+            const deadlineStyle = isRed
+                ? 'background:#ffe5e5;color:#d32f2f;font-weight:700;'
+                : '';
+
+            return `
+                    <div class="project-card-modern">
+                        <div class="project-header-modern" onclick="toggleSection('${projectId}')">
+                        <div style="display:flex;align-items:center;justify-content:space-between;width:100%;gap:10px;">
+                            <div style="display:flex;align-items:center;gap:10px;flex:1;min-width:0;">
+                                <i class="fas fa-cube"></i>
+                                <span style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
+                                    ${escapeHtml(project.duAn || project.id || 'Dự án chưa đặt tên')}
+                                </span>
+                            </div>
+                            <div style="display:flex;align-items:center;gap:20px;flex-shrink:0;">
+                                <div style="display:flex;gap:20px;">
+                                    <span class="group-badge"">
+                                       <i class="fas fa-user-check"></i> ${escapeHtml(project.nguoiPhuTrach || '—')}
+                                    </span>
+                                    <span class="group-badge" style="${deadlineStyle}">
+                                        <i class="fas fa-clock"></i>  ${escapeHtml(project.ngayBatDau || '—')} - ${escapeHtml(project.hanHoanThanh || '—')}
+                                    </span>
+                                </div>
+                                <span class="toggle-icon" id="icon-${projectId}">
+                                    <i class="fas fa-chevron-right"></i>
+                                </span>
+                            </div>
+                        </div>
                     </div>
-                    <div id="${phaseId}" class="phase-content-modern" style="display: none;">
-                        ${renderMainTasksTable(tasksInPhase)}
+                    <div id="${projectId}" class="project-content-modern" style="display:none;">
+                        <div class="table-wrapper">
+                            ${tasksForProject.length ? renderMainTasksTable(tasksForProject, project) : '<i>Không có nhiệm vụ chính</i>'}
+                        </div>
                     </div>
                 </div>
             `;
-            }
-
-            return `
-        <div class="project-card-modern">
-            <div class="project-header-modern" onclick="toggleSection('${projectId}')">
-                <div class="project-title"><i class="fas fa-cube"></i> ${escapeHtml(projectName)}</div>
-                <span class="toggle-icon" id="icon-${projectId}"><i class="fas fa-chevron-down"></i></span>
-            </div>
-            <div id="${projectId}" class="project-content-modern" style="display: none;">
-                ${innerHtml || '<div class="table-wrapper"><i>Không có giai đoạn nào</i></div>'}
-            </div>
-        </div>`;
         }
 
         function renderMainTasksTable(tasks) {
             if (!tasks.length) return '<div class="table-wrapper"><i>Không có nhiệm vụ</i></div>';
+
             tasks.sort((a, b) => (parseInt(a.thuTu) || 0) - (parseInt(b.thuTu) || 0));
-            let html = `<div class="table-wrapper"><table class="modern-table"><thead><tr>
-            <th>STT</th><th>Nhiệm vụ</th><th>Mục tiêu</th><th>Phụ trách</th><th>Phối hợp</th><th>Bắt đầu</th><th>Deadline</th>
-            <th>Trạng thái</th><th>Tiến độ</th><th>Ưu tiên</th><th>Ghi chú</th><th>Chi tiết</th>
-        </tr></thead><tbody>`;
+
+            let html = `
+    <div class="table-wrapper">
+        <table class="modern-table">
+            <thead>
+                <tr>
+                    <th>STT</th>
+                    <th>Nhiệm vụ</th>
+                    <th>Mục tiêu</th>
+                    <th>Phụ trách</th>
+                    <th>Phối hợp</th>
+                    <th>Bắt đầu</th>
+                    <th>Deadline</th>
+                    <th>Trạng thái</th>
+                    <th>Tiến độ</th>
+                    <th>Ưu tiên</th>
+                    <th>Ghi chú</th>
+                    <th>Chi tiết</th>
+                </tr>
+            </thead>
+            <tbody>
+    `;
+
             tasks.forEach((task, idx) => {
                 const subtasks = getSubtasksByMainId(task.id);
                 const hasSubtasks = subtasks.length > 0;
-                const safeId = task.id.replace(/[^a-z0-9]/gi, '-');
+
+                const safeId = makeSafeId(task.id);
                 const subtaskRowId = `subrow-${safeId}`;
-                html += `<tr>
+
+                html += `
+            <tr>
                 <td style="text-align:center">${idx + 1}</td>
-                <td><div class="task-name">${escapeHtmlWithBreaks(task.tenNhiemVu || '')}</div><div class="task-desc">${escapeHtmlWithBreaks(task.moTa || '')}</div></td>
+
+                <td>
+                    <div class="task-name">${escapeHtmlWithBreaks(task.tenNhiemVu || '')}</div>
+                    <div class="task-desc">${escapeHtmlWithBreaks(task.moTa || '')}</div>
+                </td>
+
                 <td>${escapeHtml(task.mucTieu || '—')}</td>
                 <td>${escapeHtml(task.nguoiPhuTrach || '—')}</td>
                 <td>${escapeHtml(task.phongBanPhoiHop || '—')}</td>
                 <td>${escapeHtml(task.ngayBatDau || '—')}</td>
                 <td>${escapeHtml(task.hanHoanThanh || '—')}</td>
+
                 <td>${getStatusBadge(task.trangThai)}</td>
-                <td><span class="progress-ring">${task.tiLeHoanThanh || '0'}</span></td>
+
+                <td>
+                    <span class="progress-ring">
+                        ${escapeHtml(task.tiLeHoanThanh || '0')}
+                    </span>
+                </td>
+
                 <td>${getPriorityTag(task.doUuTien)}</td>
-                <td>${getPriorityTag(task.ghiChuNV)}</td>
-                <td style="text-align:center">${hasSubtasks ? `<button class="toggle-subtask-btn" data-target="${subtaskRowId}"><i class="fas fa-list-ul"></i> Xem</button>` : '—'}</td>
+
+                <!-- FIX QUAN TRỌNG -->
+                <td>${escapeHtml(task.ghiChuNV || '—')}</td>
+
+                <td style="text-align:center">
+                    ${hasSubtasks
+                        ? `<button class="toggle-subtask-btn" data-target="${subtaskRowId}">
+                                <i class="fas fa-list-ul"></i> Xem
+                           </button>`
+                        : '—'
+                    }
+                </td>
             </tr>
-            <tr id="${subtaskRowId}" style="display: none;"><td colspan="12"><div class="subtask-section">${hasSubtasks ? renderSubtasksTable(subtasks) : '<i>Không có chi tiết</i>'}</div></td></tr>`;
+
+            <tr id="${subtaskRowId}" style="display:none;">
+                <td colspan="12">
+                    <div class="subtask-section">
+                        ${hasSubtasks
+                        ? renderSubtasksTable(subtasks)
+                        : '<i>Không có chi tiết</i>'
+                    }
+                    </div>
+                </td>
+            </tr>
+        `;
             });
-            html += `</tbody></table></div>`;
+
+            html += `
+            </tbody>
+        </table>
+    </div>
+    `;
+
             return html;
         }
 
         function renderSubtasksTable(subtasks) {
             if (!subtasks.length) return '';
             let subHtml = `<div class="table-wrapper"><table class="modern-table"><thead><tr>
-            <th>STT</th><th>Nhiệm vụ chi tiết</th><th>Mục tiêu</th><th>Phụ trách</th><th>Phối hợp</th>
-            <th>Bắt đầu</th><th>Deadline</th><th>Trạng thái</th><th>Ưu tiên</th><th>Lý do trễ</th><th>Rủi ro</th><th>Ghi chú</th>
-         </tr></thead><tbody>`;
+                <th>STT</th><th>Nhiệm vụ chi tiết</th><th>Mục tiêu</th><th>Phụ trách</th><th>Phối hợp</th>
+                <th>Bắt đầu</th><th>Deadline</th><th>Trạng thái</th><th>Ưu tiên</th><th>Lý do trễ</th><th>Rủi ro</th><th>Ghi chú</th>
+            </tr></thead><tbody>`;
+
             subtasks.forEach((sub, idx) => {
                 subHtml += `<tr>
-                <td style="text-align:center">${idx + 1}</td>
-                <td><div class="task-name">${escapeHtmlWithBreaks(sub.tenNhiemVuChiTiet || '')}</div><div class="task-desc">${escapeHtmlWithBreaks(sub.moTaChiTiet || '')}</div></td>
-                <td>${escapeHtml(sub.dauRaCanDat || '—')}</td>
-                <td>${escapeHtml(sub.nguoiPhuTrach || '—')}</td>
-                <td>${escapeHtml(sub.nguoiPhoiHop || '—')}</td>
-                <td>${escapeHtml(sub.thoiGianBatDau || '—')}</td>
-                <td>${escapeHtml(sub.deadlineDuKien || '—')}</td>
-                <td>${getStatusBadge(sub.trangThai)}</td>
-                <td>${getPriorityTag(sub.mucDoUuTien)}</td>
-                <td>${escapeHtml(sub.lyDoTre || '—')}</td>
-                <td>${escapeHtml(sub.ruiRoChinh || '—')}</td>
-                <td>${escapeHtml(sub.ghiChuNVCT || '—')}</td>
-             </tr>`;
+                    <td style="text-align:center">${idx + 1}</td>
+                    <td>
+                        <div class="task-name">${escapeHtmlWithBreaks(sub.tenNhiemVuChiTiet || '')}</div>
+                        <div class="task-desc">${escapeHtmlWithBreaks(sub.moTaChiTiet || '')}</div>
+                    </td>
+                    <td>${escapeHtml(sub.dauRaCanDat || '—')}</td>
+                    <td>${escapeHtml(sub.nguoiPhuTrach || '—')}</td>
+                    <td>${escapeHtml(sub.nguoiPhoiHop || '—')}</td>
+                    <td>${escapeHtml(sub.thoiGianBatDau || '—')}</td>
+                    <td>${escapeHtml(sub.deadlineDuKien || '—')}</td>
+                    <td>${getStatusBadge(sub.trangThai)}</td>
+                    <td>${getPriorityTag(sub.mucDoUuTien)}</td>
+                    <td>${escapeHtml(sub.lyDoTre || '—')}</td>
+                    <td>${escapeHtml(sub.ruiRoChinh || '—')}</td>
+                    <td>${escapeHtml(sub.ghiChuNVCT || '—')}</td>
+                </tr>`;
             });
+
             subHtml += `</tbody></table></div>`;
             return subHtml;
         }
@@ -1196,20 +1396,21 @@
 
         function renderCurrentGroupMode() {
             const container = document.getElementById('plan-container');
-            const filtered = getFilteredTasks();
-            if (!filtered.length) {
-                container.innerHTML = `<div class="error-msg"><i class="fas fa-info-circle"></i> Không có nhiệm vụ nào phù hợp với bộ lọc.</div>`;
+            const filteredProjects = getFilteredProjects();
+
+            if (!filteredProjects.length) {
+                container.innerHTML = `<div class="error-msg"><i class="fas fa-info-circle"></i> Không có dự án nào phù hợp với bộ lọc.</div>`;
                 syncToggleIcons();
                 return;
             }
 
-            const departmentMap = groupTasksByField(filtered, 'phongBan', 'Không xác định');
+            const departmentMap = groupTasksByField(filteredProjects, 'phongBan', 'Không xác định');
             let html = '';
             const departmentNames = sortGroupKeys(Array.from(departmentMap.keys()));
 
             departmentNames.forEach(deptName => {
-                const deptTasks = departmentMap.get(deptName) || [];
-                html += renderDepartmentSection(deptName, deptTasks);
+                const deptProjects = departmentMap.get(deptName) || [];
+                html += renderDepartmentSection(deptName, deptProjects);
             });
 
             container.innerHTML = html || `<div class="error-msg">Không có dữ liệu để hiển thị.</div>`;
@@ -1218,28 +1419,21 @@
             syncToggleIcons();
         }
 
-        function renderDepartmentSection(departmentName, deptTasks) {
+        function renderDepartmentSection(departmentName, deptProjects) {
             const deptId = `dept-${makeSafeId(departmentName)}-${makeSafeId(currentGroupMode)}`;
             const groupField = currentGroupMode === 'year' ? 'nam' : 'loaiDuAn';
-            const groupLabel = currentGroupMode === 'year' ? 'Năm tạo' : 'Loại dự án';
             const groupIcon = currentGroupMode === 'year' ? 'calendar-alt' : 'tags';
-            const groupMap = groupTasksByField(deptTasks, groupField, 'Không xác định');
+
+            const groupMap = groupTasksByField(deptProjects, groupField, 'Không xác định');
             const groupNames = sortGroupKeys(Array.from(groupMap.keys()));
 
             let groupHtml = '';
             groupNames.forEach(groupName => {
-                const projectsMap = new Map();
-                const groupTasks = groupMap.get(groupName) || [];
-                groupTasks.forEach(task => {
-                    const projectName = task.duAn && task.duAn.trim() ? task.duAn : 'Dự án chưa phân loại';
-                    if (!projectsMap.has(projectName)) projectsMap.set(projectName, []);
-                    projectsMap.get(projectName).push(task);
-                });
-                groupHtml += renderGroupCard(groupName, projectsMap, groupLabel, groupIcon, deptId);
+                const projectsInGroup = groupMap.get(groupName) || [];
+                groupHtml += renderGroupCard(groupName, projectsInGroup, groupIcon, deptId);
             });
 
-            const projectSet = new Set(deptTasks.map(t => t.duAn || ''));
-            const projectCount = projectSet.size;
+            const projectCount = deptProjects.length;
 
             return `
                 <div class="department-section">
@@ -1250,32 +1444,89 @@
                             <span class="toggle-icon" id="icon-${deptId}"><i class="fas fa-chevron-right"></i></span>
                         </div>
                     </div>
-                    <div id="${deptId}" class="department-content" style="display: none;">
+                    <div id="${deptId}" class="department-content" style="display:none;">
                         ${groupHtml || '<div class="table-wrapper"><i>Không có nhóm con</i></div>'}
                     </div>
                 </div>`;
         }
 
-        function renderGroupCard(groupName, projectsMap, groupLabel, icon, parentId) {
+        function renderGroupCard(groupName, projectsInGroup, icon, parentId) {
             const groupId = `group-${makeSafeId(parentId)}-${makeSafeId(groupName)}`;
-            const projectCount = projectsMap.size;
+            const projectCount = projectsInGroup.length;
+            const validProjects = projectsInGroup.filter(p => p.ngayBatDau || p.hanHoanThanh);
+
+            // Lấy ngày bắt đầu sớm nhất
+            const minStart = validProjects
+                .map(p => p.ngayBatDau)
+                .filter(Boolean)
+                .sort()[0] || '—';
+
+            // Lấy hạn hoàn thành muộn nhất
+            const maxEnd = validProjects
+                .map(p => p.hanHoanThanh)
+                .filter(Boolean)
+                .sort()
+                .slice(-1)[0] || '—';
+
+            const confirmMap = groupTasksByField(projectsInGroup, 'xacNhanHoanThanh', 'Chưa xác nhận');
+            const confirmKeys = sortGroupKeys(Array.from(confirmMap.keys()));
+
             let projectHtml = '';
-            const projectNames = sortGroupKeys(Array.from(projectsMap.keys()));
-            projectNames.forEach(projectName => {
-                const projTasks = projectsMap.get(projectName) || [];
-                projectHtml += renderProjectCard(projectName, projTasks, `-${makeSafeId(groupId)}-${makeSafeId(projectName)}`);
+
+            confirmKeys.forEach(confirmStatus => {
+                const projectsInConfirm = confirmMap.get(confirmStatus) || [];
+
+                const confirmId = `confirm-${makeSafeId(groupId)}-${makeSafeId(confirmStatus)}`;
+
+                let innerProjectHtml = '';
+                projectsInConfirm.forEach(project => {
+                    innerProjectHtml += renderProjectCard(
+                        project,
+                        `-${makeSafeId(confirmId)}-${makeSafeId(project.id || project.duAn)}`
+                    );
+                });
+                const isDone = confirmStatus.toLowerCase().includes('đã');
+
+                const icon = isDone ? 'fa-check-circle' : 'fa-hourglass-half';
+                const color = isDone ? '#16a34a' : '#d97706';
+
+                projectHtml += `
+        <div class="group-section">
+            <div class="group-header-card" onclick="toggleSection('${confirmId}')"
+                 style="background:#f8fafc;border-left:4px solid #94a3b8;">
+                 
+                <div class="group-title">
+                    <i class="fas ${icon}" style="color:${color}"></i>
+                    ${escapeHtml(confirmStatus)}
+                </div>
+
+                <div class="group-meta">
+                    <div class="group-badge">
+                        ${projectsInConfirm.length} dự án
+                    </div>
+                    <span class="toggle-icon" id="icon-${confirmId}">
+                        <i class="fas fa-chevron-right"></i>
+                    </span>
+                </div>
+            </div>
+
+            <div id="${confirmId}" class="group-content" style="display:none;">
+                ${innerProjectHtml}
+            </div>
+        </div>
+    `;
             });
 
             return `
                 <div class="group-section">
                     <div class="group-header-card" onclick="toggleSection('${groupId}')">
-                        <div class="group-title"><i class="fas fa-${icon}"></i> ${escapeHtml(groupName)}</div>
+                        <div class="group-title"><i class="fas fa-${icon}"></i>${escapeHtml(groupName)}</div>
                         <div class="group-meta">
-                            <div class="group-badge"><i class="fas fa-layer-group"></i> ${projectCount} dự án</div>
+                            <div class="group-badge"><i class="fas fa-cube"></i> ${projectCount} dự án</div>
                             <span class="toggle-icon" id="icon-${groupId}"><i class="fas fa-chevron-right"></i></span>
                         </div>
                     </div>
-                    <div id="${groupId}" class="group-content" style="display: none;">
+                    <div id="${groupId}" class="group-content" style="display:none;">
                         ${projectHtml || '<div class="table-wrapper"><i>Không có dự án</i></div>'}
                     </div>
                 </div>`;
@@ -1303,12 +1554,11 @@
             [
                 '.department-content',
                 '.group-content',
-                '.project-content-modern',
-                '.phase-content-modern'
+                '.project-content-modern'
             ].forEach(selector => {
                 document.querySelectorAll(selector).forEach(el => {
                     const id = el.id;
-                    const iconSpan = document.getElementById(`icon-${id}`) || document.getElementById(`phase-icon-${id}`);
+                    const iconSpan = document.getElementById(`icon-${id}`);
                     if (!iconSpan) return;
                     const isOpen = el.style.display !== 'none';
                     iconSpan.innerHTML = isOpen ? '<i class="fas fa-chevron-down"></i>' : '<i class="fas fa-chevron-right"></i>';
@@ -1318,34 +1568,46 @@
 
         window.toggleSection = function (id) {
             const div = document.getElementById(id);
-            const iconSpan = document.getElementById(`icon-${id}`) || document.getElementById(`phase-icon-${id}`);
+            const iconSpan = document.getElementById(`icon-${id}`);
             if (div) {
                 const isVisible = div.style.display !== 'none';
                 div.style.display = isVisible ? 'none' : 'block';
                 if (iconSpan) iconSpan.innerHTML = isVisible ? '<i class="fas fa-chevron-right"></i>' : '<i class="fas fa-chevron-down"></i>';
             }
         };
-        window.toggleProjectContent = window.toggleSection;
-        window.togglePhaseContent = window.toggleSection;
 
         window.expandAll = function () {
-            document.querySelectorAll('.department-content, .group-content, .project-content-modern, .phase-content-modern').forEach(el => el.style.display = 'block');
+            document.querySelectorAll('.department-content, .group-content, .project-content-modern').forEach(el => el.style.display = 'block');
             document.querySelectorAll('.toggle-icon').forEach(i => i.innerHTML = '<i class="fas fa-chevron-down"></i>');
-            document.querySelectorAll('.phase-toggle-icon').forEach(i => i.innerHTML = '<i class="fas fa-chevron-down"></i>');
         };
+
         window.collapseAll = function () {
-            document.querySelectorAll('.department-content, .group-content, .project-content-modern, .phase-content-modern').forEach(el => el.style.display = 'none');
+            document.querySelectorAll('.department-content, .group-content, .project-content-modern').forEach(el => el.style.display = 'none');
             document.querySelectorAll('.toggle-icon').forEach(i => i.innerHTML = '<i class="fas fa-chevron-right"></i>');
-            document.querySelectorAll('.phase-toggle-icon').forEach(i => i.innerHTML = '<i class="fas fa-chevron-right"></i>');
         };
+
         window.applyAllFilters = applyAllFilters;
 
-        function escapeHtml(str) { if (!str) return ''; return str.replace(/[&<>]/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[m])); }
+        function escapeHtml(str) {
+            if (str === null || str === undefined) return '';
+            return String(str).replace(/[&<>]/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[m]));
+        }
+
         function escapeHtmlWithBreaks(str) {
             return escapeHtml(String(str || '')).replace(/\r?\n/g, '<br>');
         }
-        function escapeAttr(str) { return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
-        function showError(msg) { document.getElementById('plan-container').innerHTML = `<div class="error-msg"><i class="fas fa-exclamation-triangle"></i> ${escapeHtml(msg)}</div>`; }
+
+        function escapeAttr(str) {
+            return String(str || '')
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;');
+        }
+
+        function showError(msg) {
+            document.getElementById('plan-container').innerHTML = `<div class="error-msg"><i class="fas fa-exclamation-triangle"></i> ${escapeHtml(msg)}</div>`;
+        }
 
         document.querySelectorAll('.mode-chip').forEach(btn => {
             btn.addEventListener('click', () => {
@@ -1355,7 +1617,10 @@
                 renderCurrentGroupMode();
             });
         });
-        window.addEventListener('DOMContentLoaded', () => { initGapiAndFetch(); });
+
+        window.addEventListener('DOMContentLoaded', () => {
+            initGapiAndFetch();
+        });
     </script>
 </body>
 
