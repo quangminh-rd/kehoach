@@ -917,8 +917,48 @@
         // Sheet chi tiết
         const PLAN_SUB_RANGE = '02_02_ke_hoach_chi_tiet!A:Z';
 
-        const urlParams = new URLSearchParams(window.location.search);
-        const initialDepartmentFilter = normalizeQueryValue(urlParams.get('phongBan') || '');
+        function normalizeQueryValue(value) {
+            return (value || '').replace(/\+/g, ' ').trim();
+        }
+
+        function getFlexibleUrlParams() {
+            const rawSearch = window.location.search ? window.location.search.slice(1) : '';
+            const normalizedSearch = rawSearch.replace(/\?/g, '&');
+            return new URLSearchParams(normalizedSearch);
+        }
+
+        function getParam(params, names) {
+            for (const name of names) {
+                const value = params.get(name);
+                if (value !== null && value !== undefined && String(value).trim() !== '') {
+                    return normalizeQueryValue(value);
+                }
+            }
+            return '';
+        }
+
+        function isAllView() {
+            return normalizeQueryValue(currentUserContext.view).toLowerCase() === 'all';
+        }
+
+        function containsText(source, target) {
+            const s = normalizeQueryValue(source).toLowerCase();
+            const t = normalizeQueryValue(target).toLowerCase();
+            if (!s || !t) return false;
+            return s.includes(t);
+        }
+
+        const urlParams = getFlexibleUrlParams();
+
+        const currentUserContext = {
+            tenNhanVien: getParam(urlParams, ['tennhanvien', 'tenNhanVien']),
+            chucDanh: getParam(urlParams, ['chucdanh', 'chucDanh']),
+            phongBan: getParam(urlParams, ['phongBan', 'phongban']),
+            khuVuc: getParam(urlParams, ['khuvuc', 'khuVuc']),
+            view: getParam(urlParams, ['view'])
+        };
+
+        const initialDepartmentFilter = isAllView() ? '' : currentUserContext.phongBan;
 
         let rawProjects = [];
         let rawMainTasks = [];
@@ -926,8 +966,50 @@
         let currentGroupMode = 'year';
         let currentDepartmentFilter = initialDepartmentFilter;
 
-        function normalizeQueryValue(value) {
-            return (value || '').replace(/\+/g, ' ').trim();
+        function isPrivilegedUser() {
+            const chucDanh = normalizeQueryValue(currentUserContext.chucDanh).toLowerCase();
+            const khuVuc = normalizeQueryValue(currentUserContext.khuVuc);
+
+            return (
+                chucDanh === 'tbp' ||
+                (chucDanh === 'quản lý sản xuất' && khuVuc === 'Miền Bắc')
+            );
+        }
+
+        function getAccessibleProjects() {
+            if (isAllView()) return rawProjects;
+            return rawProjects.filter(canViewProject);
+        }
+
+        function canViewProject(project) {
+            if (!project) return false;
+            if (isAllView()) return true;
+
+            const userDept = normalizeQueryValue(currentUserContext.phongBan);
+            const userName = normalizeQueryValue(currentUserContext.tenNhanVien);
+
+            if (!userDept) return false;
+
+            const projectDept = normalizeQueryValue(project.phongBan);
+            const projectSupportDept = normalizeQueryValue(project.phongBanPhoiHop);
+            const privileged = isPrivilegedUser();
+
+            // Rule 1: [phong_ban] = user's unit
+            if (projectDept && projectDept === userDept) {
+                if (privileged) return true;
+
+                if (!userName) return false;
+
+                const relatedTasks = getMainTasksForProject(project);
+                return relatedTasks.some(task => containsText(task.nguoiPhuTrach, userName));
+            }
+
+            // Rule 2: [phong_ban_phoi_hop] contains user's unit
+            if (projectSupportDept && containsText(projectSupportDept, userDept)) {
+                return privileged;
+            }
+
+            return false;
         }
 
         function makeSafeId(value) {
@@ -1102,10 +1184,12 @@
         }
 
         function populateFilters() {
-            const departments = [...new Set(rawProjects.map(p => p.phongBan).filter(v => v && v.trim() !== ""))];
-            const projects = [...new Set(rawProjects.map(p => p.duAn).filter(v => v && v.trim() !== ""))];
-            const years = [...new Set(rawProjects.map(p => p.nam).filter(v => v && v.trim() !== ""))];
-            const types = [...new Set(rawProjects.map(p => p.loaiDuAn).filter(v => v && v.trim() !== ""))];
+            const visibleProjects = getAccessibleProjects();
+
+            const departments = [...new Set(visibleProjects.map(p => p.phongBan).filter(v => v && v.trim() !== ""))];
+            const projects = [...new Set(visibleProjects.map(p => p.duAn).filter(v => v && v.trim() !== ""))];
+            const years = [...new Set(visibleProjects.map(p => p.nam).filter(v => v && v.trim() !== ""))];
+            const types = [...new Set(visibleProjects.map(p => p.loaiDuAn).filter(v => v && v.trim() !== ""))];
 
             const departmentSelect = document.getElementById('departmentFilter');
             departmentSelect.innerHTML = '<option value="">Tất cả phòng ban</option>';
@@ -1164,12 +1248,14 @@
         }
 
         function getFilteredProjects() {
+            const baseProjects = getAccessibleProjects();
+
             const departmentVal = document.getElementById('departmentFilter').value;
             const projectVal = document.getElementById('projectFilter').value;
             const yearVal = document.getElementById('yearFilter').value;
             const typeVal = document.getElementById('typeFilter').value;
 
-            return rawProjects.filter(project => {
+            return baseProjects.filter(project => {
                 if (departmentVal && project.phongBan !== departmentVal) return false;
                 if (projectVal && project.duAn !== projectVal) return false;
                 if (yearVal && project.nam !== yearVal) return false;
