@@ -752,14 +752,14 @@
 
         .subtask-section .modern-table th:nth-child(2),
         .subtask-section .modern-table td:nth-child(2) {
-            width: 19%;
+            width: 23%;
             /* Tên chi tiết + mô tả */
             text-align: left;
         }
 
         .subtask-section .modern-table th:nth-child(3),
         .subtask-section .modern-table td:nth-child(3) {
-            width: 10%;
+            width: 15%;
             /* Mục tiêu */
             text-align: left;
         }
@@ -773,7 +773,7 @@
 
         .subtask-section .modern-table th:nth-child(5),
         .subtask-section .modern-table td:nth-child(5) {
-            width: 8%;
+            width: 9%;
             /* Phối hợp */
             text-align: left;
         }
@@ -806,21 +806,7 @@
 
         .subtask-section .modern-table th:nth-child(10),
         .subtask-section .modern-table td:nth-child(10) {
-            width: 8%;
-            /* Lý do trễ */
-            text-align: left;
-        }
-
-        .subtask-section .modern-table th:nth-child(11),
-        .subtask-section .modern-table td:nth-child(11) {
-            width: 7%;
-            /* Rủi ro */
-            text-align: left;
-        }
-
-        .subtask-section .modern-table th:nth-child(12),
-        .subtask-section .modern-table td:nth-child(12) {
-            width: 10%;
+            width: 15%;
             /* Ghi chú */
             text-align: left;
         }
@@ -2279,7 +2265,7 @@
             <thead>
                 <tr>
                     <th>STT</th><th>Nhiệm vụ chi tiết</th><th>Mục tiêu</th><th>Phụ trách</th><th>Phối hợp</th>
-                    <th>Bắt đầu</th><th>Deadline</th><th>Trạng thái</th><th>Ưu tiên</th><th>Lý do trễ</th><th>Rủi ro</th><th>Ghi chú</th>
+                    <th>Bắt đầu</th><th>Deadline</th><th>Trạng thái</th><th>Ưu tiên</th><th>Ghi chú</th>
                 </tr>
             </thead>
             <tbody>
@@ -2300,8 +2286,6 @@
                 <td>${escapeHtml(sub.deadlineDuKien || '—')}</td>
                 <td>${getStatusBadge(sub.trangThai)}</td>
                 <td>${getPriorityTag(sub.mucDoUuTien)}</td>
-                <td>${escapeHtml(sub.lyDoTre || '—')}</td>
-                <td>${escapeHtml(sub.ruiRoChinh || '—')}</td>
                 <td>${escapeHtml(sub.ghiChuNVCT || '—')}</td>
             </tr>
         `;
